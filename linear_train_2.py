@@ -4,7 +4,7 @@ import torch.optim as optim
 import torch.nn as nn
 from torch.nn import init
 from model.Linear import Linear
-from dataset.dataset import getdata
+from dataset.Linear_dataset import getdata
 
 
 num_input = 2
