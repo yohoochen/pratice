@@ -16,6 +16,12 @@ def set_figsize(figsize=(3.5, 2.5)):
     # 设置图的尺寸
     plt.rcParams['figure.figsize'] = figsize
 
+def xyplot(x_vals, y_vals, name):
+    set_figsize(figsize=(5, 2.5))
+    plt.plot(x_vals.detach().numpy(), y_vals.detach().numpy())
+    plt.xlabel('x')
+    plt.ylabel(name + '(x)')
+
 def get_fashion_mnist_labels(labels):
     text_labels = ['t-shirt', 'trouser', 'pullover', 'dress', 'coat',
                    'sandal', 'shirt', 'sneaker', 'bag', 'ankle boot']
@@ -87,6 +93,7 @@ def train_ch3(net, train_iter, test_iter, loss, num_epochs, batch_size,
         for X, y in train_iter:
             y_hat = net(X)
             l = loss(y_hat, y).sum()
+            # print(X.shape, y.shape, y_hat.shape, loss(y_hat, y).shape, l.shape)
 
             # 梯度清零
             if optimizer is not None:
@@ -110,7 +117,7 @@ def train_ch3(net, train_iter, test_iter, loss, num_epochs, batch_size,
 
 #3.7
 #样本X的形状为(batch_size, 1, 28, 28)变为(batch_size, 784)
-class FlattenLayer(nn.module):
+class FlattenLayer(nn.Module):
     def __init__(self):
         super(FlattenLayer, self).__init__()
     def forward(self, X):
@@ -120,14 +127,5 @@ class FlattenLayer(nn.module):
 
 
 if __name__ == "__main__":
-    num_inputs = 2
-    num_examples = 1000
-    true_w = [2, -3.4]
-    true_b = 4.2
-    features = torch.from_numpy(np.random.normal(0, 1, (num_examples, num_inputs)))
-    labels = true_w[0] * features[:, 0] + true_w[1] * features[:, 1] + true_b
-    labels += torch.from_numpy(np.random.normal(0, 0.01, size=labels.size()))
-
-
-    set_figsize()
-    plt.scatter(features[:, 1].numpy(), labels.numpy(), 1)
+    x = torch.arange(-8.0, 8.0, 0.1, requires_grad=True)
+    y = x.relu()

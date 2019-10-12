@@ -18,7 +18,9 @@ for epoch in range(num_epochs):  # 训练模型一共需要num_epochs个迭代�
     # 在每一个迭代周期中，会使用训练数据集中所有样本一次（假设样本数能够被批量大小整除）。X
     # 和y分别是小批量样本的特征和标签
     for X, y in data_iter(batch_size, features, labels):
+        print(loss(net(X, w, b), y))
         l = loss(net(X, w, b), y).sum()  # l是有关小批量X和y的损失
+        print(l)
         l.backward()  # 小批量的损失对模型参数求梯度
         sgd([w, b], lr, batch_size)  # 使用小批量随机梯度下降迭代模型参数
 
