@@ -25,7 +25,7 @@ init.constant_(net[0].bias, val=0)
 loss = nn.MSELoss()
 
 #定义优化器
-optimizer = optim.SGD(net.parameters(), lr= 0.03)
+optimizer = optim.SGD(net.parameters(), lr=0.03)
 print(optimizer)
 
 #开始训练
