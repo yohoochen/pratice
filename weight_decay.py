@@ -63,7 +63,7 @@ def fit_and_plot_pytorch(wd):
         for X, y in train_iter:
             print(X.shape, y.shape)
             print(loss(net(X), y), loss(net(X), y).shape)
-            l = loss(net(X), y).sum()
+            l = loss(net(X), y).mean()
             print(l, l.shape)
             optimizer_w.zero_grad()
             optimizer_b.zero_grad()
