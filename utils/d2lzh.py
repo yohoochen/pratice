@@ -7,6 +7,8 @@ import torchvision
 import random
 import torch.nn as nn
 import time
+import torch.nn.functional as F
+
 
 def use_svg_display():
     # 用矢量图显示
@@ -179,6 +181,13 @@ def train_ch5(net, train_iter, test_iter, batch_size, optimizer, device, num_epo
         print('epoch %d, loss %.4f, train acc %.3f, test acc %.3f, time %.1f sec'
               % (epoch + 1, train_l_sum / batch_count, train_acc_sum / n, test_acc, time.time() - start))
 
+#5_8
+class GlobalAvgPool2d(nn.Module):
+    # 全局平均池化层可通过将池化窗口形状设置成输入的高和宽实现
+    def __init__(self):
+        super(GlobalAvgPool2d, self).__init__()
+    def forward(self, x):
+        return F.avg_pool2d(x, kernel_size=x.size()[2:])
 
 if __name__ == "__main__":
     x = torch.arange(-8.0, 8.0, 0.1, requires_grad=True)
