@@ -9,7 +9,6 @@ import torch.nn as nn
 import time
 import torch.nn.functional as F
 
-
 def use_svg_display():
     # 用矢量图显示
     display.set_matplotlib_formats('svg')
@@ -188,6 +187,26 @@ class GlobalAvgPool2d(nn.Module):
         super(GlobalAvgPool2d, self).__init__()
     def forward(self, x):
         return F.avg_pool2d(x, kernel_size=x.size()[2:])
+
+#5_11
+class Residual(nn.Module):
+    def __init__(self, in_channels, out_channels, use_1x1conv=False, stride=1):
+        super(Residual, self).__init__()
+        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1, stride=stride)
+        self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1)
+        if use_1x1conv:
+            self.conv3 = nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=stride)
+        else:
+            self.conv3 = None
+        self.bn1 = nn.BatchNorm2d(out_channels)
+        self.bn2 = nn.BatchNorm2d(out_channels)
+
+    def forward(self, X):
+        Y = F.relu(self.bn1(self.conv1(X)))
+        Y = self.bn2(self.conv2(Y))
+        if self.conv3:
+            X = self.conv3(X)
+        return F.relu(Y + X)
 
 if __name__ == "__main__":
     x = torch.arange(-8.0, 8.0, 0.1, requires_grad=True)

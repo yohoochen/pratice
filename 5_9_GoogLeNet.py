@@ -58,6 +58,7 @@ net = nn.Sequential(b1, b2, b3, b4, b5,
 # net = nn.Sequential(b1, b2, b3, b4, b5, d2l.FlattenLayer(), nn.Linear(1024, 10))
 X = torch.rand(1, 1, 96, 96)
 for blk in net.children():
+    print('input shape: ', X.shape)
     X = blk(X)
     print('output shape: ', X.shape)
 
@@ -67,4 +68,4 @@ train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size, resize=96)
 
 lr, num_epochs = 0.001, 5
 optimizer = torch.optim.Adam(net.parameters(), lr=lr)
-d2l.train_ch5(net, train_iter, test_iter, batch_size, optimizer, device, num_epochs)
+# d2l.train_ch5(net, train_iter, test_iter, batch_size, optimizer, device, num_epochs)
