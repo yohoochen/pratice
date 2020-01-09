@@ -4,9 +4,7 @@ import numpy as np
 import pandas as pd
 import utils.d2lzh as d2l
 
-print(torch.__version__)
 torch.set_default_tensor_type(torch.FloatTensor)
-
 train_data = pd.read_csv('dataset/kaggle_house/train.csv')
 test_data = pd.read_csv('dataset/kaggle_house/test.csv')
 # print(train_data.shape, test_data.shape)
@@ -14,6 +12,8 @@ test_data = pd.read_csv('dataset/kaggle_house/test.csv')
 
 
 all_features = pd.concat((train_data.iloc[:, 1:-1], test_data.iloc[:, 1:]))
+# print(all_features.shape)
+
 
 # 先把数值全的特征标准化一下
 numeric_features = all_features.dtypes[all_features.dtypes != 'object'].index
@@ -25,14 +25,14 @@ all_features = all_features.fillna(0)
 
 # 离散数值转成指示特征, dummy_na=True将缺失值也当作合法的特征值并为其创建指示特征
 all_features = pd.get_dummies(all_features, dummy_na=True)
-print(all_features.shape) # (2919, 354)
+# print(all_features.shape) # (2919, 354)
 
 #tensor获取数值
 n_train = train_data.shape[0]
 train_features = torch.tensor(all_features[:n_train].values, dtype=torch.float)
 test_features = torch.tensor(all_features[n_train:].values, dtype=torch.float)
 train_labels = torch.tensor(train_data.SalePrice.values, dtype=torch.float).view(-1, 1)
-
+# print("tensor shape", train_features.shape, test_features.shape, train_labels.shape)
 
 def get_net(feature_num):
     net = nn.Linear(feature_num, 1)
